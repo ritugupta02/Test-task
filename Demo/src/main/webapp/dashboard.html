@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<title>Insert title here</title>
+
+</head>
+<body>
+	
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <div class="container-fluid">
+	<div class="navbar-header">
+      <a class="navbar-brand" href="#">SunBaseData</a>
+    </div>
+    <ul class="navbar-nav">
+		<li class="nav-item" onclick="adduser()">
+        <a class="nav-link active "  id="adduser" href="#">Add User</a>
+      </li>
+      <li class="nav-item " onclick="getuser()">
+        <a class="nav-link " id="getuser" href="#">Get Users</a>
+      </li>
+      
+    </ul>
+  </div>
+</nav>
+
+<form action="adduser" method="post" id="userform" class="p-4" >
+  <div class="form-group">
+    <label for="fname">First Name</label>
+    <input type="text" class="form-control" id="first_name" placeholder="Enter firstName" name="first_name">
+  </div>
+    <div class="form-group">
+    <label for="lname">Last Name</label>
+    <input type="text" class="form-control" id="last_name" placeholder="Enter lastName" name="last_name">
+  </div>
+    <div class="form-group">
+    <label for="street">Street</label>
+    <input type="text" class="form-control" id="street" placeholder="Enter street" name="street">
+  </div>
+    <div class="form-group">
+    <label for="address">Address</label>
+    <input type="text" class="form-control" id="address" placeholder="Enter address" name="address">
+  </div>
+    <div class="form-group">
+    <label for="city">City</label>
+    <input type="text" class="form-control" id="city" placeholder="Enter city" name="city">
+  </div>
+    <div class="form-group">
+    <label for="state">State</label>
+    <input type="text" class="form-control" id="state" placeholder="Enter state" name="state">
+  </div>
+    <div class="form-group">
+    <label for="email">Email address</label>
+    <input type="email" class="form-control" id="email"  placeholder="Enter email" name="email">
+  </div>
+  <div class="form-group" >
+    <label for="phone">Phone Number</label>
+    <input type="text" class="form-control" id="phone" placeholder="Enter Phone Number" name="phone">
+  </div>
+ <div class="text-center mt-4"><button type="submit" class="btn btn-primary">Submit</button></div>
+</form>
+
+<!-- Modal -->
+<div  class="modal fade"id="exampleModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Customer Data</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+   <form action="updateuser" method="post" class="p-4" >
+	<div class="form-group">
+    <label for="uuid">uuid</label>
+    <input type="text" class="form-control" id="uuid" name="uuid" >
+  </div>
+  <div class="form-group">
+    <label for="fname">First Name</label>
+    <input type="text" class="form-control" id="first_name1" placeholder="Enter firstName" name="first_name">
+  </div>
+    <div class="form-group">
+    <label for="lname">Last Name</label>
+    <input type="text" class="form-control" id="last_name1" placeholder="Enter lastName" name="last_name">
+  </div>
+    <div class="form-group">
+    <label for="street">Street</label>
+    <input type="text" class="form-control" id="street1" placeholder="Enter street" name="street">
+  </div>
+    <div class="form-group">
+    <label for="address">Address</label>
+    <input type="text" class="form-control" id="address1" placeholder="Enter address" name="address">
+  </div>
+    <div class="form-group">
+    <label for="city">City</label>
+    <input type="text" class="form-control" id="city1" placeholder="Enter city" name="city">
+  </div>
+    <div class="form-group">
+    <label for="state">State</label>
+    <input type="text" class="form-control" id="state1" placeholder="Enter state" name="state">
+  </div>
+  <div class="form-group">
+    <label for="email">Email address</label>
+    <input type="email" class="form-control" id="email1"  placeholder="Enter email" name="email">
+  </div>
+  <div class="form-group" >
+    <label for="phone">Phone Number</label>
+    <input type="text" class="form-control" id="phone1" placeholder="Enter Phone Number" name="phone">
+  </div>
+ <div class="text-center mt-4"><button type="submit" class="btn btn-primary">Submit</button></div>
+</form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table d-none p-5" id ="table">
+  <thead>
+    <tr>
+	  <th scope="col" class="d-none">uuid</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Street</th>
+      <th scope="col">Address</th>
+      <th scope="col">City</th>
+      <th scope="col">State</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
+      
+    </tr>
+  </thead>
+  <tbody id ="tableBody" class="tableBody">
+       
+  </tbody>
+</table>
+</body>
+ <script>
+	 let shouldPrepopulate = true; 
+        function getuser(){
+            var xhr = new XMLHttpRequest();
+            document.getElementById("userform").classList.add("d-none");
+            document.getElementById("getuser").classList.add("active");
+            document.getElementById("table").classList.remove("d-none");
+            document.getElementById("adduser").classList.remove("active");
+            
+            xhr.open("GET", "/Demo/getuser", true);
+            xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                var responseData = JSON.parse(xhr.responseText) ;
+                console.log(responseData);
+                var tableBody = document.getElementById("tableBody");
+                tableBody.innerHTML = "";
+                responseData.forEach(function (item) {
+                var newRow = tableBody.insertRow();
+                var uuid = 	newRow.insertCell();
+                var fname = newRow.insertCell();
+                var lname = newRow.insertCell();
+                var street = newRow.insertCell();
+                var address = newRow.insertCell();
+                var city = newRow.insertCell();
+                var state = newRow.insertCell();
+                var email = newRow.insertCell();
+                var phone = newRow.insertCell();
+                var edit = newRow.insertCell();
+                var del = newRow.insertCell();
+
+                uuid.innerHTML = item.uuid;
+                uuid.classList.add("d-none");
+                uuid.classList.add("uuid-cell");
+                fname.innerText = item.first_name;
+                fname.classList.add("first_name2");
+                lname.innerText = item.last_name;
+                lname.classList.add("last_name2");
+                street.innerHTML = item.street;
+                street.classList.add("street2");
+                address.innerHTML = item.adress;
+                address.classList.add("address2")
+                city.innerHTML = item.city;
+                city.classList.add("city2")
+                state.innerHTML = item.state;
+                state.classList.add("state2")
+                email.innerHTML = item.email;
+                email.classList.add("email2")
+                phone.innerHTML = item.phone;
+                phone.classList.add("phone2")
+                edit.innerHTML="&#9998;";
+                edit.classList.add("edit-button");
+                edit.setAttribute('data-bs-toggle', 'modal');
+                edit.setAttribute('data-bs-target', '#exampleModal');
+                del.innerHTML = "&#x1F5D1";
+                del.classList.add("btn-danger");
+                
+                                
+               });      
+               } else {
+                        console.error("Error: " + xhr.status);
+               }
+                }
+            };
+
+            xhr.send();
+        }
+        
+        function adduser(){
+			document.getElementById("userform").classList.remove("d-none");
+			document.getElementById("adduser").classList.add("active");
+            document.getElementById("table").classList.add("d-none");
+            document.getElementById("getuser").classList.remove("active");
+		}
+		
+	
+		const tableBody = document.querySelector(".tableBody")
+		document.addEventListener("click", function(event) {
+			console.log("Clicked");
+			var target = event.target;
+			
+			 if (event.target.classList.contains("btn-danger")) {
+                 console.log("yes");
+                    var row =  event.target.parentElement;
+                    
+                    
+                              
+            const dataToSend = {
+               "uuid": row.querySelector(".uuid-cell").innerText,
+             };
+
+            const servletUrl = '/Demo/deleteuser';
+
+             const fetchOptions = {
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json', 
+                 },
+                body: JSON.stringify(dataToSend), 
+               };
+ 
+           fetch(servletUrl, fetchOptions)
+            .then(response => {
+				console.log(response);
+            if (!response.ok) {
+                  throw new Error('Network response was not ok.');
+              }
+              return response.json();
+            })
+          .then(responseData => {
+			  row.remove();
+                console.log('Response from the servlet:', responseData);
+               })
+         .catch(error => {
+    // Handle errors
+           console.error('Error sending the POST request:', error);
+     });
+             }
+          else if (event.target.classList.contains("edit-button")){
+			    
+                 var row =  event.target.parentElement;
+                var uuid =row.querySelector(".uuid-cell").innerText;
+                console.log(uuid);
+               
+                var fname = row.querySelector(".first_name2").innerHTML;
+                var lname = row.querySelector(".last_name2").innerHTML;
+                var street = row.querySelector(".street2").innerHTML;
+                var address = row.querySelector(".address2").innerHTML;
+                var city = row.querySelector(".city2").innerHTML;
+                var state = row.querySelector(".state2").innerHTML;
+                var email = row.querySelector(".email2").innerHTML;
+                var phone = row.querySelector(".phone2").innerHTML;
+                document.getElementById("uuid").value = uuid;
+                document.getElementById("first_name1").value=fname;
+                document.getElementById("last_name1").value=lname;
+                document.getElementById("street1").value=street;
+                document.getElementById("address1").value=address;
+                document.getElementById("city1").value=city;
+                document.getElementById("state1").value=state;
+                document.getElementById("email1").value =email;
+                document.getElementById("phone1").value = phone; 
+		  }
+                
+            
+           
+            
+		}
+		);
+
+		
+    </script>
+</html>

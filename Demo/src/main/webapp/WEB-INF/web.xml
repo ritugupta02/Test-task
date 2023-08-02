@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN" "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+<web-app id="WebApp_ID">
+		
+	<servlet>
+	<servlet-name>authentication</servlet-name>
+	<servlet-class>com.servlet.Authentication</servlet-class>
+	</servlet>
+	
+	<servlet>
+	<servlet-name>addUser</servlet-name>
+	<servlet-class>com.servlet.AddCustomer</servlet-class>
+	</servlet>
+	
+	<servlet>
+	<servlet-name>getUser</servlet-name>
+	<servlet-class>com.servlet.GetCustomer</servlet-class>
+	</servlet>
+	
+	<servlet>
+	<servlet-name>deleteUser</servlet-name>
+	<servlet-class>com.servlet.DeleteCustomer</servlet-class>
+	</servlet>
+	
+	<servlet>
+	<servlet-name>updateUser</servlet-name>
+	<servlet-class>com.servlet.UpdateCustomer</servlet-class>
+	</servlet>
+
+	
+	<servlet-mapping>
+	<servlet-name>authentication</servlet-name>
+	<url-pattern>/authenticate</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	<servlet-name>addUser</servlet-name>
+	<url-pattern>/adduser</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	<servlet-name>getUser</servlet-name>
+	<url-pattern>/getuser</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	<servlet-name>deleteUser</servlet-name>
+	<url-pattern>/deleteuser</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	<servlet-name>updateUser</servlet-name>
+	<url-pattern>/updateuser</url-pattern>
+	</servlet-mapping>
+	
+	
+</web-app>
